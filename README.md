@@ -1,5 +1,3 @@
 # treinosCpp
 
-this repository is some tests that a make with c and c++, i will add some carbon codes here later. 
-
-that's all folks...
+  Este repositorio está servindo para eu salvar alguns testes que fiz com um codigo que renderiza um donut em 3d usando caracteres ASII
