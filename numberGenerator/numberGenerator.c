@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
+char numeroOriginal[6] = "820187";
+char *ptrNumeroOriginal = numeroOriginal;
+int n0,n1,n2,n3,n4,n5;
 
 int soma(int num) {
     if (num == 9) {
@@ -10,39 +15,51 @@ int soma(int num) {
     }
 }
 
+int calculaDias() {
+    // Definindo a data alvo (14/08/2023)
+    struct tm target_date = {0};
+    target_date.tm_year = 2023 - 1900; // Ano - 1900
+    target_date.tm_mon = 7; // Mês (0-11, então 7 representa agosto)
+    target_date.tm_mday = 14; // Dia do mês
+
+    // Obtendo a data atual do sistema
+    time_t current_time;
+    time(&current_time);
+    struct tm *current_date = localtime(&current_time);
+
+    // Calculando a diferença em segundos
+    double diff_seconds = difftime(current_time, mktime(&target_date));
+
+    // Convertendo a diferença de segundos para dias
+    int diff_days = (int)(diff_seconds / (60 * 60 * 24));
+
+    printf("Diferença em dias entre 14/08/2023 e a data atual: %d dias\n", diff_days);
+    return diff_days;
+}
+
 int main()
 {
-    char numeroOriginal[6] = "820187", numeroAtual;
-    char *ptrNumeroOriginal = numeroOriginal;
-    int qntDias = 16;
-
-    printf("o numero final para o dia 174 é: %s\n\n", numeroOriginal);
-    printf("endereco de memoria do numero original: %p\n\n", ptrNumeroOriginal);
-    for (int i = 1; i <= qntDias; i++)
+    int diff_days = calculaDias();
+    int num[6];
+    for (int i = 1; i <= diff_days; i++)
     {
-        int n0,n1,n2,n3,n4,n5;
-        n0 = ptrNumeroOriginal[0] - '0';
-        n1 = ptrNumeroOriginal[1] - '0';
-        n2 = ptrNumeroOriginal[2] - '0';
-        n3 = ptrNumeroOriginal[3] - '0';
-        n4 = ptrNumeroOriginal[4] - '0';
-        n5 = ptrNumeroOriginal[5] - '0';
-        n1 = soma(n1);
-        n5 = soma(n5);
-        if (n1 == 8) {
-            n0 = soma(n0);
-            n4 = soma(n4);
+        for (int j = 0; j < 6; j++)
+        {
+            num[j] = ptrNumeroOriginal[j] - '0';
         }
-        ptrNumeroOriginal[0] = n0 + '0';
-        ptrNumeroOriginal[1] = n1 + '0';
-        ptrNumeroOriginal[2] = n2 + '0';
-        ptrNumeroOriginal[3] = n3 + '0';
-        ptrNumeroOriginal[4] = n4 + '0';
-        ptrNumeroOriginal[5] = n5 + '0';
-        printf("dia %d, numero: %d%d%d%d%d%d\n",i,n0,n1,n2,n3,n4,n5);
-
+        num[5] = soma(num[5]);
+        num[1] = soma(num[1]);
+        if (num[1] == 8) {
+            num[0] = soma(num[0]);
+            num[4] = soma(num[4]);
+        }
+        for (int j = 0; j < 6; j++)
+        {
+            ptrNumeroOriginal[j] = num[j] + '0';
+        }
+        printf("dia  %02d, numero: %d%d%d%d%d%d\n",i,num[0],num[1],num[2],num[3],num[4],num[5]);
     }
 
-    printf("o numero final para o dia 174 é: %s\n\n", numeroOriginal);
+    printf("o numero final para o dia %d é: %s\n\n", diff_days, numeroOriginal);
     return 0;
 }
